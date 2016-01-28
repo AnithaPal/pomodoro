@@ -10,8 +10,7 @@
 				url: '/',
 				controller: 'TaskTimerCtrl as taskTimer',
 				templateUrl: 'templates/task_timer.html'	
-			});
-			
+			});			
 		
 	}
 	
