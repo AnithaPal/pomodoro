@@ -25,6 +25,30 @@
  					* @type {Object}
  				*/ 
 				 var counter = 0;
+				 
+				 
+				 /**
+					 * @function reset
+					 * @desc resets the timer
+ 				*/
+				 var stop = function(){
+					 $interval.cancel(interval);
+					 scope.currentTime = attributes.totaltime;
+					 counter = 0
+					 scope.isTimerActive = false; 
+				 }
+				 
+				 /**
+					 * @function reset
+					 * @desc resets the timer
+ 				*/
+				 var breakStop = function(){
+					 $interval.cancel(breakInterval);
+					 scope.currentBreakTime = attributes.breaktime;
+					 counter = 0
+					 scope.isBreakActive = false;
+				 }
+				 
 				/**
 					 * @function decrementTime
 					 * @desc decrement currentTime after 1000ms from $interval service
@@ -32,27 +56,27 @@
 				var decrementTime = function(){
 					if(scope.currentTime > 0){
 						counter +=1;
-						console.log("current time counter: "+ counter);
 						scope.currentTime -= 1;
 						if(counter === 1500){
 							scope.onBreak = true;
-							scope.stop();
+							scope.isBreakActive = false;
 						} 
 					}else {
 						scope.stop();
 					}
 				};
 				 
+				 /**
+					 * @function decrementBreakTime
+					 * @desc decrement currentBreakTime after 1000ms from $interval service
+				*/
 				 var decrementBreakTime = function(){
 					if(scope.currentBreakTime > 0){
-						console.log
 						counter +=1;
-						console.log('break time counter : ' + counter);
 						scope.currentBreakTime -= 1;
 						if(counter === 300){
-							scope.isTimerActive = false;
-							counter = 0;
-							scope.breakStop();	
+							scope.onBreak = false;
+							breakStop();	
 						} 
 					}
 					else {
@@ -86,15 +110,22 @@
 				scope.isTimerActive = false;
 				 
 				 /**
- 					* @desc to store status of break button 
+ 					* @desc to store status of break session 
  					* @type {Object}
  				*/
 				 scope.onBreak = false;
 				 
+				 
+				  /**
+ 					* @desc to store status of a break time wheather to display break or reset button.
+ 					* @type {Object}
+ 				*/
+				scope.isBreakActive = false;
+				 
+				 
 				 /**
 					 * @function start
 					 * @desc starts the timer 
-
  				*/
 				scope.start = function(){
 					scope.isTimerActive = true; 
@@ -102,53 +133,43 @@
 					
 				};
 				 
-				 /**
-					 * @function stop
-					 * @desc stops the timer
- 				*/
-				 scope.stop = function(){
-					 $interval.cancel(interval);
-					 scope.currentTime = attributes.totaltime;
-					 scope.isTimerActive = false; 
-				 }
 				 
 				 /**
 					 * @function reset
 					 * @desc resets the timer
  				*/
 				 scope.reset = function(){
-					 scope.currentTime = attributes.totaltime;
-				 
+					 stop();
+					 scope.start();
 				 }
 				 
 				 /**
 					 * @function break
 					 * @desc timer for breaks
- 				*/
-				 
+ 				*/ 
 				 scope.break = function(){
-					 scope.stop();
-					 counter = 0;
+					 stop();
+					 scope.onBreak = true;
+					 scope.isBreakActive = true;
 					 breakInterval = $interval(decrementBreakTime, 1000);
-					 
+					
 				 }
 				 
 				 /**
 					 * @function breakstop
-					 * @desc stops the timer
+					 * @desc stops the break timer
  				*/
-				 scope.breakStop = function(){
-					  $interval.cancel(breakInterval);
-					  scope.currentBreakTime = attributes.breaktime;
-					  scope.onBreak = false;
+				 scope.breakReset = function(){
+					  breakStop();
+					  scope.break();
+	
 				 }
-				
+				 	 
 			}	
  		};
 		
 	}
-	
-	
+
 	angular
 		.module('pomodoro')
 		.directive('timer', ['$interval', timer]);
