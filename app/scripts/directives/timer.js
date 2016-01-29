@@ -26,6 +26,12 @@
  				*/ 
 				 var counter = 0;
 				 
+				 /**
+ 					* @desc to store counter value
+ 					* @type {Object}
+ 				*/ 
+				 var workSessionCounter = 0;
+				 
 				 
 				 /**
 					 * @function reset
@@ -49,6 +55,19 @@
 					 scope.isBreakActive = false;
 				 }
 				 
+				  /**
+					 * @function long break reset
+					 * @desc resets the timer
+ 				*/
+				 var longBreakStop = function(){
+					$interval.cancel(longBreakInterval);
+					 scope.longBreakTime = attributes.longbreaktime;
+					 console.log("from longbreakstop " + scope.longBreakTime);
+					 counter = 0
+					 scope.isLongBreakActive = false;
+				 }
+				 
+				 
 				/**
 					 * @function decrementTime
 					 * @desc decrement currentTime after 1000ms from $interval service
@@ -56,13 +75,21 @@
 				var decrementTime = function(){
 					if(scope.currentTime > 0){
 						counter +=1;
+						console.log('Timer counter:' + counter);
 						scope.currentTime -= 1;
-						if(counter === 1500){
+						if(counter === 20){
 							scope.onBreak = true;
 							scope.isBreakActive = false;
+							workSessionCounter += 1
+							console.log("worksession counter: " + workSessionCounter);
+							if (workSessionCounter === 4){
+								scope.onLongBreak = true;
+								scope.onBreak = false;
+								scope.onTask = false;
+							}
 						} 
 					}else {
-						scope.stop();
+						stop();
 					}
 				};
 				 
@@ -73,15 +100,43 @@
 				 var decrementBreakTime = function(){
 					if(scope.currentBreakTime > 0){
 						counter +=1;
+						console.log('Break counter:' + counter);
 						scope.currentBreakTime -= 1;
-						if(counter === 300){
+						if(counter === 10){
 							scope.onBreak = false;
+							console.log('on break status' + scope.onBreak);
+							scope.isTimerActive = false;
 							breakStop();	
 						} 
 					}
 					else {
-						scope.breakStop();
+						scope.onBreak = false;
 						scope.isTimerActive = false;
+						breakStop();
+		
+					}
+				};
+				 
+				 /**
+					 * @function decrementLongBreakTime
+					 * @desc decrement LongBreakTime after 1000ms from $interval service
+				*/
+				 var decrementLongBreakTime = function(){
+					if(scope.longBreakTime > 0){
+						counter +=1;
+						console.log('Long Break counter:' + counter);
+						scope.longBreakTime -= 1;
+						if(counter === 30 ){
+							scope.onLongBreak = false;
+							longBreakStop();
+							workSessionCounter = 0;
+							scope.onBreak = false;
+							scope.onTask = true;	
+						} 
+					}
+					else {
+						longBreakStop();
+						scope.onLongBreak = true;
 					}
 				};
 				 
@@ -102,6 +157,19 @@
  				*/
 				scope.currentBreakTime = attributes.breaktime;
 				
+				 /**
+ 					* @desc to store long break time.
+ 					* @type {Object}
+ 				*/
+				scope.longBreakTime = attributes.longbreaktime;
+				 
+				 
+				 /**
+ 					* @desc to store status of a timer wheather to display timer, break, or long break.
+ 					* @type {Object}
+ 				*/
+				 scope.onTask = true;
+				 
 				 
 				 /**
  					* @desc to store status of a timer wheather to display  start or reset button.
@@ -122,6 +190,13 @@
  				*/
 				scope.isBreakActive = false;
 				 
+				 /**
+ 					* @desc to store status of a long break button.
+ 					* @type {Object}
+ 				*/
+				scope.onLongBreak = false;
+				 
+				scope.isLongBreakActive = false; 
 				 
 				 /**
 					 * @function start
@@ -164,6 +239,33 @@
 					  scope.break();
 	
 				 }
+				 
+				 /**
+					 * @function longBreak
+					 * @desc stops the break timer
+ 				*/
+				 
+				 scope.longBreak = function(){
+					 stop();
+					 breakStop();
+					 scope.isLongBreakActive = true; 
+					 longBreakInterval = $interval(decrementLongBreakTime, 1000);
+					 
+				 }
+				 
+				 
+				 
+				 /**
+					 * @function longBreakReset
+					 * @desc resets the long break timer
+ 				*/
+				 
+				 scope.longBreakReset = function(){
+					 longBreakStop();
+					 scope.longBreak();
+					 
+				 }
+					 
 				 	 
 			}	
  		};
