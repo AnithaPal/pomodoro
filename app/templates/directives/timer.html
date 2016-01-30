@@ -1,9 +1,13 @@
 
 <div>
-	<div ng-hide= "onBreak"> {{ currentTime | timecode }}</div>
-	<div ng-show= "onBreak"> {{ currentBreakTime | timecode }} </div>
-	<button ng-show="!isTimerActive && !onBreak"  ng-click="start()"> Start </button>
-	<button ng-show="isTimerActive && !onBreak" ng-click="reset()"> Reset </button>
-	<button ng-show="onBreak && !isBreakActive" ng-click="break()"> Break  </button>
-	<button ng-show="onBreak && isBreakActive" ng-click="breakReset()"> Reset</button>
+	<div> {{ currentTime | timecode }}</div>
+	
+	<button ng-show="!isTimerActive && onTask"  ng-click="startTask()"> Start </button>
+	<button ng-show="isTimerActive && onTask" ng-click="resetTask()"> Reset </button>
+	
+	<button ng-show="!isTimerActive && onBreak" ng-click="startBreak()"> Break  </button>
+	<button ng-show="isTimerActive && onBreak" ng-click="resetBreak()"> Reset</button>
+	
+	<button ng-show="!isTimerActive && onLongBreak" ng-click="startBreak()"> 30-Minute Break</button>
+	<button ng-show="isTimerActive && onLongBreak" ng-click="resetBreak()"> Long Break Reset </button>
 </div>
