@@ -1,8 +1,8 @@
 (function(){
 	function TaskTimerCtrl(){
-		this.totalTime = 5;
-		this.breakTime = 6;
-		this.longBreakTime = 10;
+		this.taskTime = 1500;
+		this.breakTime = 300;
+		this.longBreakTime = 1800;
 	};
 	
 	angular

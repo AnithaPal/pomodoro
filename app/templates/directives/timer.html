@@ -1,14 +1,13 @@
 
 <div>
-	<div ng-show= "onTask && !onBreak"> {{ currentTime | timecode }}</div>
-	<div ng-show= "onBreak"> {{ currentBreakTime | timecode }} </div>
-	<div ng-show="onLongBreak"> {{longBreakTime | timecode }}</div>
-	<button ng-show="!isTimerActive && onTask"  ng-click="start()"> Start </button>
-	<button ng-show="isTimerActive && onTask" ng-click="taskReset()"> Reset </button>
+	<div> {{ currentTime | timecode }}</div>
+	
+	<button ng-show="!isTimerActive && onTask"  ng-click="startTask()"> Start </button>
+	<button ng-show="isTimerActive && onTask" ng-click="resetTask()"> Reset </button>
 	
 	<button ng-show="!isTimerActive && onBreak" ng-click="startBreak()"> Break  </button>
-	<button ng-show="isTimerActive && onBreak" ng-click="breakReset()"> Reset</button>
+	<button ng-show="isTimerActive && onBreak" ng-click="resetBreak()"> Reset</button>
 	
-	<button ng-show="!isTimerActive && onLongBreak" ng-click="startLongBreak()"> 30-Minute Break</button>
-	<button ng-show="isTimerActive && onLongBreak" ng-click="longBreakReset()"> Long Break Reset </button>
+	<button ng-show="!isTimerActive && onLongBreak" ng-click="startBreak()"> 30-Minute Break</button>
+	<button ng-show="isTimerActive && onLongBreak" ng-click="resetBreak()"> Long Break Reset </button>
 </div>
