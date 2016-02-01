@@ -21,8 +21,7 @@
 					mySound.play();
 				} 
 				
-//				playDing();
-				 
+
 				var stop = function(){
 					 $interval.cancel(interval);
 				 };
@@ -59,7 +58,9 @@
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
 					}else {
-						$rootScope.$watch('watchZero', function() {
+						$rootScope.$watch(function(){
+							return scope.onTask;
+						}, function() {
 							playDing();
 				 		});
 						configBreak();
@@ -72,7 +73,9 @@
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
 					} else {
-						$rootScope.$watch('watchZero', function() {
+						$rootScope.$watch(function(){
+							return scope.onBreak;
+						}, function(newValue, oldValue) {
 					 	playDing();
 				 		});
 						configTask();
