@@ -1,5 +1,5 @@
 (function(){
-	function timer($interval){
+	function timer($interval, $rootScope){
 	
 		return {
 			 templateUrl: '/templates/directives/timer.html',
@@ -12,7 +12,16 @@
 				var interval;
 				  
 				var workSessionCounter = 0;
+				
+				var mySound = new buzz.sound('/assets/music/ding.mp3',{
+					preload: true
+				});
 				 
+				var playDing = function(){
+					mySound.play();
+				} 
+				
+
 				var stop = function(){
 					 $interval.cancel(interval);
 				 };
@@ -49,6 +58,11 @@
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
 					}else {
+						$rootScope.$watch(function(){
+							return scope.onTask;
+						}, function() {
+							playDing();
+				 		});
 						configBreak();
 						stop();
 					}
@@ -59,6 +73,11 @@
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
 					} else {
+						$rootScope.$watch(function(){
+							return scope.onBreak;
+						}, function(newValue, oldValue) {
+					 	playDing();
+				 		});
 						configTask();
 						stop();
 		
@@ -106,7 +125,8 @@
 					  stop();
 					  setCurrentTime();
 					  scope.startBreak();
-				 };		
+				 };	
+				
 			}	
  		};
 		
@@ -114,6 +134,6 @@
 
 	angular
 		.module('pomodoro')
-		.directive('timer', ['$interval', timer]);
+		.directive('timer', ['$interval','$rootScope', timer]);
 	
 })();
