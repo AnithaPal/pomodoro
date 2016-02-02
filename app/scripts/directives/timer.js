@@ -1,5 +1,5 @@
 (function(){
-	function timer($interval, $rootScope){
+	function timer($interval){
 	
 		return {
 			 templateUrl: '/templates/directives/timer.html',
@@ -57,15 +57,8 @@
 				var decrementTime = function(){
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
-					}else {
-						$rootScope.$watch(function(){
-							return scope.onTask;
-						}, function(newValue, oldValue) {
-							if(newValue){
-								playDing();
-							}
-							
-				 		});
+					} else {
+						playDing();
 						configBreak();
 						stop();
 					}
@@ -76,13 +69,7 @@
 					if(scope.currentTime > 0){
 						scope.currentTime -= 1;
 					} else {
-						$rootScope.$watch(function(){
-							return scope.onBreak;
-						}, function(newValue, oldValue) {
-							if(newValue){
-								playDing();
-							}
-				 		});
+						playDing();
 						configTask();
 						stop();
 		
@@ -139,6 +126,6 @@
 
 	angular
 		.module('pomodoro')
-		.directive('timer', ['$interval','$rootScope', timer]);
+		.directive('timer', ['$interval', timer]);
 	
 })();
