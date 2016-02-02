@@ -60,8 +60,11 @@
 					}else {
 						$rootScope.$watch(function(){
 							return scope.onTask;
-						}, function() {
-							playDing();
+						}, function(newValue, oldValue) {
+							if(newValue){
+								playDing();
+							}
+							
 				 		});
 						configBreak();
 						stop();
@@ -76,7 +79,9 @@
 						$rootScope.$watch(function(){
 							return scope.onBreak;
 						}, function(newValue, oldValue) {
-					 	playDing();
+							if(newValue){
+								playDing();
+							}
 				 		});
 						configTask();
 						stop();
