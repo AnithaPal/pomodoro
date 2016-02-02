@@ -8,7 +8,7 @@
     margin: 0 auto;
     max-width: 64rem;
 }
- 
+
 html{
     height: 100%;
 }
@@ -53,7 +53,7 @@ body{
     height: 100px;
     color: white;
     text-decoration: none;
-    
+
 }
 
 .links-container .navbar-link{
@@ -79,9 +79,11 @@ body{
  .container.narrow {
      max-width: 56rem;
  }
-    
+
+
+
 /* Medium and small screens (640px) */
-@media(min-width: 40rem){
+/*@media(min-width: 40rem){
     html{font-size: 112%;}
     .column{
         float: left;
@@ -94,10 +96,10 @@ body{
     .column.third{width: 33.3%;}
     .column.fourth{width: 25%;}
     .column.flow-opposite{float: right;}
-        
-    
+
+
 }
 /* Large screens (1024px) */
-@media(max-width: 63rem){
+/*@media(max-width: 63rem){
     html{font-size: 120%;}
-}
+}*/
