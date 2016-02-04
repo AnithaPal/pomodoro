@@ -9,12 +9,12 @@
 			.state('taskTimer', {
 				url: '/',
 				controller: 'TaskTimerCtrl as taskTimer',
-				templateUrl: 'templates/task_timer.html'	
-			});			
-		
+				templateUrl: 'templates/task_timer.html'
+			});
+
 	}
-	
+
 	angular
-		.module('pomodoro', ['ui.bootstrap', 'ui.router', 'firebase'])
-		.config(config);	
+		.module('pomodoro', ['ui.router', 'firebase'])
+		.config(config);
 })();
