@@ -1,22 +1,33 @@
-<main class="container">
-	<div class="column.fourth"> 
-		<h2> Task History</h2>
-		<form>
-			<label> Task </label>
-			<input type="text" ng-model="taskName"></input>
-			<button ng-click="taskTimer.addTask(taskName)"> Add Task </button>
-		</form>
-		<ul ng-repeat="task in taskTimer.tasks">
-			<li> 
-				<span>{{ task.taskName }}</span>
-				<span><button ng-click="taskTimer.deleteTask(task)"> Delete </button></span>
-			</li>
-		</ul>	
-		    	
+<main class="container-fluid">
+	<div class="row-fluid">
+		<aside class="col-sm-3 col-xs-12 no-float ">
+			<h1 class="text-center"> Task History</h2>
+			<form>
+				<div class = "input-group">
+					<input type = "text" class = "form-control" placeholder="Enter a task..." ng-model="taskName">
+						<span class = "input-group-btn">
+							<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(taskName)">
+								+
+							</button>
+						</span>
+				</div>
+			</form>
+
+			<table>
+				<tr ng-repeat="task in taskTimer.tasks">
+					<td> {{ task.taskName }}</td>
+					<td>
+						<span class="glyphicon glyphicon-remove btn btn-sm" ng-click="taskTimer.deleteTask(task)" type="button"></span>
+					</td>
+				</tr>
+			</table>
+		</aside>
+		<section class="col-sm-9 col-xs-12 no-float ">
+			<h1 class="text-center"> Timer </h1>
+			<div class="text-center v-center">
+				<timer taskTime="{{taskTimer.taskTime}}" breakTime="{{taskTimer.breakTime}}" longBreakTime="{{taskTimer.longBreakTime}}">
+				</timer>
+			</div>
+		</section>
 	</div>
-	<div class="column.three-fourths"> 
-		<h1> Timer </h1>
-		<timer taskTime="{{taskTimer.taskTime}}" breakTime="{{taskTimer.breakTime}}" longBreakTime="{{taskTimer.longBreakTime}}">
-		</timer>
-	</div>		
 </main>
