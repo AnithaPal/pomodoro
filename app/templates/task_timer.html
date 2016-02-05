@@ -6,7 +6,7 @@
 				<div class = "input-group">
 					<input type = "text" class = "form-control" placeholder="Enter a task..." ng-model="taskName">
 						<span class = "input-group-btn">
-							<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(taskName)">
+							<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(taskName, taskTimer.timeStamp)">
 								+
 							</button>
 						</span>
@@ -14,8 +14,8 @@
 			</form>
 
 			<table>
-				<tr ng-repeat="task in taskTimer.tasks">
-					<td> {{ task.taskName }}</td>
+				<tr ng-repeat="task in taskTimer.tasks | orderBy: 'created_at':true">
+					<td> {{ task.taskName }}  </td>
 					<td>
 						<span class="glyphicon glyphicon-remove btn btn-sm" ng-click="taskTimer.deleteTask(task)" type="button"></span>
 					</td>
