@@ -8,6 +8,7 @@
 			taskList.$add({ name: task.name,
 											sessionQty: task.sessionQty,
 										  created_at: Firebase.ServerValue.TIMESTAMP});
+			
 		};
 
 		TaskService.delete = function(taskID){
@@ -15,8 +16,8 @@
 		};
 
 		TaskService.getLastAdded = function (callback) {
-        firebaseref.orderByChild("name").limitToLast(1).on("value", callback);
-      }
+			firebaseref.orderByChild("createdAt").limitToLast(1).on("value", callback);
+		};
 
 		TaskService.all = function() {
 			return taskList;

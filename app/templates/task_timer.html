@@ -29,7 +29,8 @@
 		</aside>
 		<section class="col-sm-9 col-xs-12 no-float ">
 			<h1 class="text-center"> Timer </h1>
-			<p class="lead text-center"> Current Task: {{ lastAddedTask }} </p>
+			<p class="lead text-center" ng-model="taskTimer.currentTask" ng-init="taskTimer.getLastTask()"> Current Task: {{ taskTimer.currentTask.name || currentTask.name}} </p>
+
 
 			<div class="text-center v-center">
 				<timer taskTime="{{taskTimer.taskTime}}" breakTime="{{taskTimer.breakTime}}" longBreakTime="{{taskTimer.longBreakTime}}">
