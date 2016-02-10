@@ -28,6 +28,9 @@
 			TaskService.delete(task);
 		}
 		
+		this.updateTask = function(task){
+			TaskService.update(task);
+		}
 		this.setAsCurrent = function(task){
 			this.currentTask = task;
 			console.log('I am from setAsCurrent' + this.currentTask.name);

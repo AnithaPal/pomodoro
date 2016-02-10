@@ -9,6 +9,9 @@
 				<div class="form-group">
 						<input type = "text" class = "form-control" placeholder="Enter no of sessions..." ng-model="task.sessionQty" required>
 				</div>
+				<div class="form-group">
+						<input type = "text" class = "form-control" placeholder="Enter no of interruptions ..." ng-model="task.interruptionQty" required>
+				</div>
 				<div class="form-group text-center">
 					<span class = "input-group-btn">
 						<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(task)" ng-disabled="userForm.$invalid">
@@ -19,10 +22,13 @@
 		</form>
 
 			<table>
-				<tr ng-repeat="task in taskTimer.tasks | orderBy: 'created_at':true">
+				<tr ng-repeat="task in taskTimer.tasks | orderBy:'created_at':true">
 					<td ng-click="taskTimer.setAsCurrent(task)"> {{ task.name }}  </td>
 					<td>
 						<span class="glyphicon glyphicon-remove btn btn-sm" ng-click="taskTimer.deleteTask(task)" type="button"></span>
+					</td>
+					<td>
+						<span class="glyphicon glyphicon-edit btn btn-sm" ng-click="taskTimer.updateTask(task)" type="button"></span>
 					</td>
 				</tr>
 			</table>
