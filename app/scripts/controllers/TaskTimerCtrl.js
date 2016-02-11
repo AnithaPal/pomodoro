@@ -5,35 +5,23 @@
 		this.breakTime = 300;
 		this.longBreakTime = 1800;
 
-		this.tasks = TaskService.all();
-
-		// sets created task as a default task
-		this.getLastTask = function() {
-			TaskService.getLastAdded(function (snapshot) {
-				snapshot.forEach(function (task) {
-					$scope.currentTask = task.val();
-				});
-			});
-		};
-		
-		this.currentTask = $scope.currentTask;
+		this.tasks = TaskService.bind();
+		TaskService.bindLastTaskToValue(this, 'currentTask');
 		
 		this.addTask = function(task) {
 			TaskService.create(task);
-			$scope.task = null;
-			this.getLastTask();
 		};
 
 		this.deleteTask = function(task) {
 			TaskService.delete(task);
 		}
 		
-		this.updateTask = function(task){
-			TaskService.update(task);
-		}
+//		this.updateTask = function(task){
+//			TaskService.$save(task);
+//		}
+		
 		this.setAsCurrent = function(task){
 			this.currentTask = task;
-			console.log('I am from setAsCurrent' + this.currentTask.name);
 		};
 	};
 

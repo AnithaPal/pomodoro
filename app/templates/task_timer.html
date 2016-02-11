@@ -14,7 +14,7 @@
 				</div>
 				<div class="form-group text-center">
 					<span class = "input-group-btn">
-						<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(task)" ng-disabled="userForm.$invalid">
+						<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(task); task = {};" ng-disabled="userForm.$invalid">
 							Add
 						</button>
 					</span>
@@ -35,7 +35,7 @@
 		</aside>
 		<section class="col-sm-9 col-xs-12 no-float ">
 			<h1 class="text-center"> Timer </h1>
-			<p class="lead text-center" ng-model="taskTimer.currentTask" ng-init="taskTimer.getLastTask()"> Current Task: {{ taskTimer.currentTask.name || currentTask.name}} </p>
+			<p class="lead text-center"> Current Task: {{ taskTimer.currentTask.name }} </p>
 
 
 			<div class="text-center v-center">

@@ -1,65 +1,36 @@
 (function(){
-	function TaskService($firebaseObject){
+	function TaskService($firebaseArray){
 		var TaskService = {};
-		var firebaseref = new Firebase("https://pomodoro-tasktimer.firebaseio.com/");
-		var tasksRef = firebaseref.child("tasks");
-		var taskList = $firebaseObject(tasksRef);
+		var tasksRef = new Firebase("https://pomodoro-tasktimer.firebaseio.com/tasks");
+		var tasks = $firebaseArray(tasksRef);
 
 		TaskService.create = function(task){
-			tasksRef.push({ name: task.name,
+			tasks.$add({ name: task.name,
 											sessionQty: task.sessionQty,
 										  created_at: Firebase.ServerValue.TIMESTAMP,
-											interruptionQty: task.interruptionQty });
-			
-		};
+											interruptionQty: task.interruptionQty }	)	};
 
 		TaskService.delete = function(task){
-			console.log(task.name);
-			tasksRef.orderByChild("name").equalTo(task.name).once("value", function(snapshot) {
-				tasksRef.child(Object.keys(snapshot.val())[0]).remove();
-			})
-		};
-		
-		TaskService.update = function(taskID){
-			var item = taskList.$getRecord(taskID);
-				item.name = task.name;
-				item.sessionQty = task.sessionQty;
-				item.interruptionQty = task.interruptionQty;
-				taskList.$save(item);
-				
-		}
-
-		TaskService.getLastAdded = function (callback) {
-			tasksRef.orderByChild("createdAt").limitToLast(1).on("value", callback);
+			tasks.$remove(task);
 		};
 
-		TaskService.all = function() {
-			return taskList;
+		TaskService.bindLastTaskToValue = function(ctrl, value) {
+			tasksRef.orderByChild("createdAt").limitToLast(1).on("value", function (snap) {
+				snap.forEach(function (task) {
+					ctrl[value] = task.val();
+				});
+			});
 		};
 
+		TaskService.bind = function() {
+			return tasks;
+		};
 		
 		return TaskService;
 	}
 
 	angular
-	.module("pomodoro")
-	.factory('TaskService', ['$firebaseObject', TaskService]);
+		.module("pomodoro")
+		.factory('TaskService', ['$firebaseArray', TaskService]);
 
 })();
-
-
-//  TaskService.addWorkSession = function(task, workSession){
-// 	var index = taskList.$indexOf( task.$id );
-// 	console.log(index);
-// 	var item = taskList[task.$id]
-// 	item.no_worksession = workSession;
-// 	taskList.$set(item.$id, item);
-// 	// task.update({no_worksession: workSession})
-// };
-
-
-//TaskService.sync = function(ctrl) {
-//			tasksRef.orderByChild("createdAt").on("value", function(snap) {
-//				ctrl.tasks = snap.val().reverse();
-//			});
-//		};
