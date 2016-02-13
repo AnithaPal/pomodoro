@@ -4,22 +4,30 @@
 		var tasksRef = new Firebase("https://pomodoro-tasktimer.firebaseio.com/tasks");
 		var tasks = $firebaseArray(tasksRef);
 
-		TaskService.create = function(task){
+		TaskService.create = function(task, ctrl){
 			tasks.$add({ name: task.name,
 											sessionQty: task.sessionQty,
 										  created_at: Firebase.ServerValue.TIMESTAMP,
-											interruptionQty: task.interruptionQty }	)	};
+											interruptions: task.interruptions });
+		};
 
 		TaskService.delete = function(task){
 			tasks.$remove(task);
 		};
 
-		TaskService.bindLastTaskToValue = function(ctrl, value) {
-			tasksRef.orderByChild("createdAt").limitToLast(1).on("value", function (snap) {
+		TaskService.bindLastTaskToValue = function(ctrl, attribute) {
+			tasksRef.orderByChild("createdAt").limitToLast(1).once("value", function (snap) {
 				snap.forEach(function (task) {
-					ctrl[value] = task.val();
+					ctrl[attribute] = task.val();
 				});
 			});
+		};
+		
+		TaskService.update = function(task, attribute, value) {
+			var i = tasks.$indexFor(task.$id);
+			tasks[i][attribute] = value;
+			
+			tasks.$save(i);
 		};
 
 		TaskService.bind = function() {

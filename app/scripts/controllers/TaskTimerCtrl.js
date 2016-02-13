@@ -1,27 +1,40 @@
 (function(){
 	function TaskTimerCtrl(TaskService, $scope){
-
-		this.taskTime = 1500;
-		this.breakTime = 300;
-		this.longBreakTime = 1800;
-
-		this.tasks = TaskService.bind();
-		TaskService.bindLastTaskToValue(this, 'currentTask');
+		var ctrl = this;
 		
-		this.addTask = function(task) {
-			TaskService.create(task);
+		ctrl.taskTime = 1500;
+		ctrl.breakTime = 300;
+		ctrl.longBreakTime = 1800;
+
+		ctrl.tasks = TaskService.bind();
+		
+		ctrl.tasks.$loaded().then(function(x) {
+			TaskService.bindLastTaskToValue(ctrl, 'currentTask');
+  	})
+		
+		ctrl.tasks.$watch(function(event) {
+			console.log(event);
+			if (event === "child_added" || event === "child_changed") {
+  			TaskService.bindLastTaskToValue(ctrl, 'currentTask');
+			}
+		});
+		
+		ctrl.addTask = function(task) {
+			task.interruptions = 0;
+			TaskService.create(task, ctrl);
 		};
 
-		this.deleteTask = function(task) {
+		ctrl.deleteTask = function(task) {
 			TaskService.delete(task);
 		}
 		
-//		this.updateTask = function(task){
-//			TaskService.$save(task);
-//		}
+		ctrl.setAsCurrent = function(task){
+			ctrl.currentTask = task;
+		};
 		
-		this.setAsCurrent = function(task){
-			this.currentTask = task;
+		ctrl.addInterruption = function(){
+			value = ctrl.currentTask.interruptions + 1;
+			TaskService.update(ctrl.currentTask, 'interruptions', value);
 		};
 	};
 

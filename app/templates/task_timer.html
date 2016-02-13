@@ -9,9 +9,7 @@
 				<div class="form-group">
 						<input type = "text" class = "form-control" placeholder="Enter no of sessions..." ng-model="task.sessionQty" required>
 				</div>
-				<div class="form-group">
-						<input type = "text" class = "form-control" placeholder="Enter no of interruptions ..." ng-model="task.interruptionQty" required>
-				</div>
+				
 				<div class="form-group text-center">
 					<span class = "input-group-btn">
 						<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(task); task = {};" ng-disabled="userForm.$invalid">
@@ -35,7 +33,9 @@
 		</aside>
 		<section class="col-sm-9 col-xs-12 no-float ">
 			<h1 class="text-center"> Timer </h1>
-			<p class="lead text-center"> Current Task: {{ taskTimer.currentTask.name }} </p>
+			<p class="lead text-center" ng-model="taskTimer.currentTask.name"> Current Task: {{ taskTimer.currentTask.name }} </p>
+			<p class="lead text-center" ng-model="taskTimer.currentTask.interruptions"> Interruptions: {{ taskTimer.currentTask.interruptions }} </p>
+			<p class="text-center"><button  class="btn btn-default btn-custom" ng-click="taskTimer.addInterruption()"> + </button></p>
 
 
 			<div class="text-center v-center">
