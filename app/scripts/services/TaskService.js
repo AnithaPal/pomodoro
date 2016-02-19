@@ -1,30 +1,49 @@
 (function(){
 	function TaskService($firebaseArray){
 		var TaskService = {};
+		var tasksRef = new Firebase("https://pomodoro-tasktimer.firebaseio.com/tasks");
+		var tasks = $firebaseArray(tasksRef);
 
-		var firebaseref = new Firebase("https://pomodoro-tasktimer.firebaseio.com/");
-
-
-		var taskList = $firebaseArray(firebaseref);
-
-		TaskService.create = function(taskName){
-			taskList.$add({ taskName: taskName ,
-										created_at: Firebase.ServerValue.TIMESTAMP});
+		TaskService.create = function(task, ctrl){
+			tasks.$add({ name: task.name,
+											sessionQty: task.sessionQty,
+										  created_at: Firebase.ServerValue.TIMESTAMP,
+											interruptions: task.interruptions });
 		};
 
-		TaskService.delete = function(taskID){
-			taskList.$remove(taskID);
+		TaskService.delete = function(task){
+			tasks.$remove(task);
 		};
 
-		TaskService.all = function() {
-			return taskList;
+		TaskService.bindLastTaskToValue = function(callback) {
+			tasksRef.orderByChild("createdAt").limitToLast(1).once("value", function (snap) {
+				snap.forEach(function (task) {
+					callback(task.key(), task.val());
+				});
+			});
+		};
+
+		TaskService.getTask = function(key) {
+			var i = tasks.$indexFor(key);
+			return tasks.$getRecord(i);
+		}
+
+		TaskService.update = function(task, attribute, value) {
+			var i = tasks.$indexFor(task.$id);
+			tasks[i][attribute] = value;
+
+			tasks.$save(i);
+		};
+
+		TaskService.bind = function() {
+			return tasks;
 		};
 
 		return TaskService;
 	}
 
 	angular
-	.module("pomodoro")
-	.factory('TaskService', ['$firebaseArray', TaskService]);
+		.module("pomodoro")
+		.factory('TaskService', ['$firebaseArray', TaskService]);
 
 })();

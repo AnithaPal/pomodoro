@@ -1,28 +1,48 @@
 (function(){
 	function TaskTimerCtrl(TaskService, $scope){
+		var ctrl = this;
 
-		this.taskTime = 1500;
-		this.breakTime = 300;
-		this.longBreakTime = 1800;
+		ctrl.taskTime = 1500;
+		ctrl.breakTime = 300;
+		ctrl.longBreakTime = 1800;
 
-		this.tasks = TaskService.all();
-		console.log(this.tasks);
+		ctrl.tasks = TaskService.bind();
 
-		this.addTask = function(task) {
+		var setCurrentToLast = function() {
+			TaskService.bindLastTaskToValue(function(key, task) {
+				ctrl.currentTask = task;
+				ctrl.currentTask.$id = key;
+			});
+		}
 
-			TaskService.create(task);
-			$scope.taskName = null;
+		ctrl.tasks.$loaded().then(function(x) {
+			setCurrentToLast();
+  	})
+
+		ctrl.addTask = function(task) {
+			task.interruptions = 0;
+			TaskService.create(task, ctrl);
+			setCurrentToLast();
 		};
 
-		this.deleteTask = function(task) {
+		ctrl.deleteTask = function(task) {
 			TaskService.delete(task);
+			setCurrentToLast();
 		}
+
+		ctrl.setAsCurrent = function(task){
+			console.log(task);
+			ctrl.currentTask = task;
+		};
+
+		ctrl.addInterruption = function(){
+			ctrl.currentTask.interruptions++;
+			TaskService.update(ctrl.currentTask,'interruptions', ctrl.currentTask.interruptions);
+		};
 	};
-
-
 
 	angular
 		.module('pomodoro')
-		.controller('TaskTimerCtrl', ['TaskService', '$scope',TaskTimerCtrl])
+		.controller('TaskTimerCtrl', ['TaskService', '$scope', TaskTimerCtrl])
 
 })();

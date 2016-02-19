@@ -2,20 +2,26 @@
 	<div class="row-fluid">
 		<aside class="col-sm-3 col-xs-12 no-float ">
 			<h1 class="text-center"> Task History</h2>
-			<form>
-				<div class = "input-group">
-					<input type = "text" class = "form-control" placeholder="Enter a task..." ng-model="taskName">
-						<span class = "input-group-btn">
-							<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(taskName, taskTimer.timeStamp)">
-								+
-							</button>
-						</span>
+			<form name="userForm" novalidate>
+				<div class="form-group">
+					<input type = "text" class = "form-control" placeholder="Enter a task..." ng-model="task.name" required>
 				</div>
-			</form>
+				<div class="form-group">
+						<input type = "text" class = "form-control" placeholder="Enter no of sessions..." ng-model="task.sessionQty" required>
+				</div>
+
+				<div class="form-group text-center">
+					<span class = "input-group-btn">
+						<button class = "btn btn-default" type = "button" ng-click="taskTimer.addTask(task); task = {};" ng-disabled="userForm.$invalid">
+							Add
+						</button>
+					</span>
+				</div>
+		</form>
 
 			<table>
-				<tr ng-repeat="task in taskTimer.tasks | orderBy: 'created_at':true">
-					<td> {{ task.taskName }}  </td>
+				<tr ng-repeat="task in taskTimer.tasks | orderBy:'created_at':true">
+					<td ng-click="taskTimer.setAsCurrent(task)"> {{ task.name }}  </td>
 					<td>
 						<span class="glyphicon glyphicon-remove btn btn-sm" ng-click="taskTimer.deleteTask(task)" type="button"></span>
 					</td>
@@ -24,6 +30,11 @@
 		</aside>
 		<section class="col-sm-9 col-xs-12 no-float ">
 			<h1 class="text-center"> Timer </h1>
+			<p class="lead text-center" ng-model="taskTimer.currentTask.name"> Current Task: {{ taskTimer.currentTask.name }} </p>
+			<p class="lead text-center" ng-model="taskTimer.currentTask.interruptions"> Interruptions: {{ taskTimer.currentTask.interruptions }} </p>
+			<p class="text-center"><button  class="btn btn-default btn-custom" ng-click="taskTimer.addInterruption()"> + </button></p>
+
+
 			<div class="text-center v-center">
 				<timer taskTime="{{taskTimer.taskTime}}" breakTime="{{taskTimer.breakTime}}" longBreakTime="{{taskTimer.longBreakTime}}">
 				</timer>
