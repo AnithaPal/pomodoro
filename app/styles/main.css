@@ -36,7 +36,7 @@
     background-size: cover;
     font-family: "Open Sans", sans-serif;
     color: #FFAAAA;
-  
+
 }
 
 
@@ -78,6 +78,15 @@ section .v-center{
     border-color: transparent;
     border-radius: 10px;
     font-size: 18px;
+
+}
+
+.heading{
+  font-size: 4rem;
+}
+
+.info-page p{
+  font-size: 2rem;
 
 }
 
