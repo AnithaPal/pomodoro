@@ -15,25 +15,30 @@
 			tasks.$remove(task);
 		};
 
-		TaskService.bindLastTaskToValue = function(ctrl, attribute) {
+		TaskService.bindLastTaskToValue = function(callback) {
 			tasksRef.orderByChild("createdAt").limitToLast(1).once("value", function (snap) {
 				snap.forEach(function (task) {
-					ctrl[attribute] = task.val();
+					callback(task.key(), task.val());
 				});
 			});
 		};
-		
+
+		TaskService.getTask = function(key) {
+			var i = tasks.$indexFor(key);
+			return tasks.$getRecord(i);
+		}
+
 		TaskService.update = function(task, attribute, value) {
 			var i = tasks.$indexFor(task.$id);
 			tasks[i][attribute] = value;
-			
+
 			tasks.$save(i);
 		};
 
 		TaskService.bind = function() {
 			return tasks;
 		};
-		
+
 		return TaskService;
 	}
 
